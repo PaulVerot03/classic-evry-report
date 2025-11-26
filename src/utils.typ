@@ -77,7 +77,7 @@
 }
 
 #let custom-footer(chapter-label) = context {
-  if is-chapter-page(chapter-label) {
+  if is-chapter-page(chapter-label) and page.numbering != none {
     align(center, counter(page).display(page.numbering))
   }
 }

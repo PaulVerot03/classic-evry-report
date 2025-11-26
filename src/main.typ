@@ -72,23 +72,23 @@
     show-if-not-none(en.title)[*Title:*\ ],
     show-if-not-none(en.theme)[*Theme:*\ ],
     [*Project Period:*\ #semester-en #today.year()],
-    show-if-not-none(meta.project-group)[*Project Group:*\ ],
+    show-if-not-none(meta.project-group)[*Group:*\ ],
     [*Participants:*\ #meta.participants.join("\n")],
     if type(meta.supervisors) == array [
       *Supervisors:*\ #meta.supervisors.join("\n")
     ] else [
       *Supervisor:*\ #meta.supervisors
     ],
-    [*Copies:* 1],
+    //[*Copies:* 1],
     [*Number of Pages:* #context counter(page).final().first()],
-    [*Date of Completion:*\ #datetime.today().display("[day]/[month]-[year]")],
+    [*Last change:*\ #datetime.today().display("[day]-[month]-[year]")],
   )
   page(
     grid(
       columns: (1fr, 1fr),
       rows: (3fr, 7fr, 30pt),
       column-gutter: 10pt,
-      image("/classic-evry-report/AAUgraphics/Logo_bleu_centré.svg", width: 90%),
+      image("/classic-evry-report/graphics/Logo_bleu_centré.svg", width: 90%),
       align(right + horizon)[
         #strong(en.department)\
         Université Évry Paris-Saclay\
@@ -122,23 +122,23 @@
   let info = (
     show-if-not-none(fr.title)[*Titre:*\ ],
     show-if-not-none(fr.theme)[*Thème:*\ ],
-    show-if-not-none(meta.project-group)[*Groupe de projet:*\ ],
+    show-if-not-none(meta.project-group)[*Groupe:*\ ],
     [*Participants:*\ #meta.participants.join("\n")],
     if type(meta.supervisors) == array [
       *Superviseurs:*\ #meta.supervisors.join("\n")
     ] else [
       *Superviseur:*\ #meta.supervisors
     ],
-    [*Copies:* 1],
+    //[*Copies:* 1],
     [*Nombre de pages:* #context counter(page).final().first()],
-    [*Date d'achèvement:*\ #datetime.today().display("[day]/[month]-[year]")],
+    [*Dernier changement:*\ #datetime.today().display("[day]-[month]-[year]")],
   )
   page(
     grid(
       columns: (1fr, 1fr),
       rows: (3fr, 7fr, 30pt),
       column-gutter: 10pt,
-      image("/classic-evry-report/AAUgraphics/Logo_noir_centré.svg", width: 90%),
+      image("/classic-evry-report/graphics/Logo_noir_centré.svg", width: 90%),
       align(right + horizon)[
         #strong(fr.department)\
         Université Évry Paris-Saclay\
@@ -167,7 +167,7 @@
 #let frontmatter(meta, primary-lang, en-is-set, fr, fr-is-set, clear-double-page, body) = {
   // Front/cover page.
   page(
-    background: image("/classic-evry-report/AAUgraphics/evry-waves.svg", width: 100%, height: 100%),
+    background: image("/classic-evry-report/graphics/evry-waves.svg", width: 100%, height: 100%),
     margin: auto,
     numbering: none,
     grid(
@@ -201,7 +201,7 @@
         },
       )),
       none,
-      align(center, image("/classic-evry-report/AAUgraphics/Logo_bleu_centré.svg", width: 25%))
+      align(center, image("/classic-evry-report/graphics/Logo_bleu_centré.svg", width: 25%))
     ),
   )
 
