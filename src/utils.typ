@@ -83,12 +83,7 @@
 }
 
 #let clear-page(skip-double) = {
-  if skip-double {
-    set page(header: none, footer: none)
-    pagebreak(weak: true, to: "odd")
-  } else {
-    pagebreak(weak: true)
-  }
+  pagebreak(weak: true)
 }
 
 
@@ -152,4 +147,27 @@
 
 #let show-if-not-none(val, name) = {
   if val != none [#name #val]
+}
+
+#let use-roman-numbering() = {
+  set page(numbering: "I")
+}
+
+#let use-arabic-numbering() = {
+  set page(numbering: "1")
+}
+
+#let use-binary-numbering() = {
+  set page(numbering: n => {
+    let binary-string = ""
+    if n == 0 {
+      binary-string = "0"
+    } else {
+      while n > 0 {
+        binary-string = str(calc.rem(n, 2)) + binary-string
+        n = n / 2
+      }
+    }
+    binary-string
+  })
 }

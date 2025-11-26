@@ -12,21 +12,21 @@
     title: "Untitled",
     theme: none,
     department: "Department of Computer Science",
-    department-url: "https://www.cs.aau.dk",
+    department-url: "https://www.univ-evry.fr/universite/organisation/composantes/stockage-des-departements/departement-genie-informatique.html",
   ),
   fr: (
     title: "Sans titre",
     theme: none,
     department: "Département d'informatique",
-    department-url: "https://www.cs.aau.dk",
+    department-url: "https://www.univ-evry.fr/universite/organisation/composantes/stockage-des-departements/departement-genie-informatique.html",
   ),
 
 )
 
-#let theme-blue = rgb(0, 58, 105)
+#let theme-blue = rgb("#003b69")
 
 #let mainmatter(skip-double: true, body) = {
-  clear-page(skip-double)
+  //clear-page(skip-double)
   set page(numbering: "1", header: custom-header(), footer: custom-footer(
     <chapter>,
   ))
@@ -88,7 +88,7 @@
       columns: (1fr, 1fr),
       rows: (3fr, 7fr, 30pt),
       column-gutter: 10pt,
-      image("/classic-evry-report/AAUgraphics/Logo_noir_centré.svg", width: 90%),
+      image("/classic-evry-report/AAUgraphics/Logo_bleu_centré.svg", width: 90%),
       align(right + horizon)[
         #strong(en.department)\
         Université Évry Paris-Saclay\
@@ -122,7 +122,6 @@
   let info = (
     show-if-not-none(fr.title)[*Titre:*\ ],
     show-if-not-none(fr.theme)[*Thème:*\ ],
-    [*Période du projet:*\ #semester-fr #today.year()],
     show-if-not-none(meta.project-group)[*Groupe de projet:*\ ],
     [*Participants:*\ #meta.participants.join("\n")],
     if type(meta.supervisors) == array [
@@ -168,11 +167,11 @@
 #let frontmatter(meta, primary-lang, en-is-set, fr, fr-is-set, clear-double-page, body) = {
   // Front/cover page.
   page(
-    background: image("/classic-evry-report/AAUgraphics/aau_waves.svg", width: 100%, height: 100%),
+    background: image("/classic-evry-report/AAUgraphics/evry-waves.svg", width: 100%, height: 100%),
     margin: auto,
     numbering: none,
     grid(
-      columns: 100%, // needed to not set uneven margins
+      columns: 100%,
       rows: (50%, 20%, 30%),
       align(center + bottom, box(
         fill: theme-blue,
@@ -191,7 +190,7 @@
             #meta.participants.join(", ", last: " & ")\
             #text(10pt)[
               #if meta.field-of-study != none [
-                #meta.field-of-study, // trailing comma is included
+                #meta.field-of-study, 
               ]
               #meta.project-group,
               #datetime.today().year()
@@ -202,28 +201,30 @@
         },
       )),
       none,
-      align(center, image("/classic-evry-report/AAUgraphics/Logo_noir_centré.svg", width: 25%))
+      align(center, image("/classic-evry-report/AAUgraphics/Logo_bleu_centré.svg", width: 25%))
     ),
   )
 
   counter(page).update(1)
 
   // Colophon
-  page(align(bottom)[
-    #set text(size: 10pt)
-    #set par(first-line-indent: 0em)
+  // page(align(bottom)[
+  //   #set text(size: 10pt)
+  //   #set par(first-line-indent: 0em)
 
-    // Copyright #sym.copyright Aalborg University #datetime.today().year()\
-    // #v(0.2cm)
-    // This report is typeset using the Typst system.
-  ])
+  //   // Copyright #sym.copyright Aalborg University #datetime.today().year()\
+  //   // #v(0.2cm)
+  //   // This report is typeset using the Typst system.
+  // ])
 
   if en-is-set {
     titlepage-en(meta, en)
   }
 
   if fr-is-set {
-    clear-page(clear-double-page)
+    if clear-double-page {
+      clear-page(clear-double-page)
+    }
     titelside-fr(meta, fr)
   }
 
