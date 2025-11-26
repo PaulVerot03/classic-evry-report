@@ -5,7 +5,7 @@ A Typst report template for Université Évry Paris-Saclay students.
 This is a fork of [classic-aau-report](https://typst.app/universe/package/classic-aau-report), modified to fit my uni's colours and logos (Université Évry Paris-Saclay), for my personal use. 
 
 ## Local Installation
-
+**Installation Instructions are eroneous, they will not work, i am fixing them**
 Since this template is designed for local use with your Typst files located outside this directory, you'll need to install it as a local package.
 
 ### Method 1: Using the install script (recommended)
