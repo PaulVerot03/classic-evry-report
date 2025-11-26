@@ -1,28 +1,4 @@
-# Classic AAU Report
-
-Unofficial Typst template for project reports at Aalborg University (AAU).
-This is based on the LaTeX template [https://github.com/jkjaer/aauLatexTemplates](https://github.com/jkjaer/aauLatexTemplates).
-
-The template is generic to any field of study, but defaults to Computer Science.
-
-## Usage
-
-Click "Create project in app".
-
-Or via the CLI
-
-```bash
-typst init @preview/classic-aau-report
-```
-
-**NOTE:**
-By default the template uses the `Palatino Linotype` font, which is _not_ available in Typst.
-It is available [here](https://github.com/Tinggaard/classic-aau-report/releases/tag/fonts) ([direct download](https://github.com/Tinggaard/classic-aau-report/releases/download/fonts/PalatinoLinotype.zip)).
-Or you can change the font to your liking, using the `font` argument.
-
-To use it in the _web-app_, put the `.ttf` files anywhere in the project tree.
-
-To use it _locally_ specify the `--font-path` flag (or see the [docs](https://typst.app/docs/reference/text/text/#parameters-font)).
+This is a fork of [classic-aau-report](https://typst.app/universe/package/classic-aau-report), which I modified to fit my university stuling guideline for my personal use.
 
 ## Configuration
 
