@@ -10,17 +10,20 @@
   ),
   en: (
     title: "Untitled",
+    theme: none,
     department: "Department of Computer Science",
     department-url: "https://www.cs.aau.dk",
   ),
-  dk: (
-    title: "Uden titel",
-    department: "Institut for Datalogi",
-    department-url: "https://www.dat.aau.dk",
+  fr: (
+    title: "Sans titre",
+    theme: none,
+    department: "Département d'informatique",
+    department-url: "https://www.cs.aau.dk",
   ),
+
 )
 
-#let aau-blue = rgb(33, 26, 82)
+#let theme-blue = rgb(0, 58, 105)
 
 #let mainmatter(skip-double: true, body) = {
   clear-page(skip-double)
@@ -85,73 +88,76 @@
       columns: (1fr, 1fr),
       rows: (3fr, 7fr, 30pt),
       column-gutter: 10pt,
-      image("/AAUgraphics/aau_logo_en.svg", width: 90%),
+      image("/classic-evry-report/AAUgraphics/Logo_noir_centré.svg", width: 90%),
       align(right + horizon)[
         #strong(en.department)\
-        Aalborg University\
+        Université Évry Paris-Saclay\
         #link(en.department-url)
       ],
 
       grid(
         gutter: 16pt,
-        ..info.filter(i => i != none)
+        //..info.filter(i => i != none)
       ),
       if en.abstract != none {
         [*Abstract:*\ #box(width: 100%, stroke: .5pt, inset: 4pt, en.abstract)]
-      },
+      } else { [] },
 
       grid.cell(
         colspan: 2,
         text(size: 10pt)[
-          _The content of this report is freely available, but publication (with reference) may only be pursued due to agreement with the author._
+         // _The content of this report is freely available, but publication (with reference) may only be pursued due to agreement with the author._
         ],
       ),
     ),
   )
 }
 
-// Danish Abstract page.
-#let titelside-dk(meta, dk) = {
-  set text(lang: "da")
+
+
+
+// French Abstract page.
+#let titelside-fr(meta, fr) = {
+  set text(lang: "fr")
   let info = (
-    show-if-not-none(dk.title)[*Titel:*\ ],
-    show-if-not-none(dk.theme)[*Tema:*\ ],
-    [*Projektperiode:*\ #semester-dk #today.year()],
-    show-if-not-none(meta.project-group)[*Projektgruppe:*\ ],
-    [*Deltagere:*\ #meta.participants.join("\n")],
+    show-if-not-none(fr.title)[*Titre:*\ ],
+    show-if-not-none(fr.theme)[*Thème:*\ ],
+    [*Période du projet:*\ #semester-fr #today.year()],
+    show-if-not-none(meta.project-group)[*Groupe de projet:*\ ],
+    [*Participants:*\ #meta.participants.join("\n")],
     if type(meta.supervisors) == array [
-      *Vejledere:*\ #meta.supervisors.join("\n")
+      *Superviseurs:*\ #meta.supervisors.join("\n")
     ] else [
-      *Vejleder:*\ #meta.supervisors
+      *Superviseur:*\ #meta.supervisors
     ],
-    [*Opsalgstal:* 1],
-    [*Sidetal:* #context counter(page).final().first()],
-    [*Afleveringsdato:*\ #datetime.today().display("[day]/[month]-[year]")],
+    [*Copies:* 1],
+    [*Nombre de pages:* #context counter(page).final().first()],
+    [*Date d'achèvement:*\ #datetime.today().display("[day]/[month]-[year]")],
   )
   page(
     grid(
       columns: (1fr, 1fr),
       rows: (3fr, 7fr, 30pt),
       column-gutter: 10pt,
-      image("/AAUgraphics/aau_logo_da.svg", width: 90%),
+      image("/classic-evry-report/AAUgraphics/Logo_noir_centré.svg", width: 90%),
       align(right + horizon)[
-        #strong(dk.department)\
-        Aalborg Universitet\
-        #link(dk.department-url)
+        #strong(fr.department)\
+        Université Évry Paris-Saclay\
+        //#link(fr.department-url)
       ],
 
       grid(
         gutter: 16pt,
         ..info.filter(i => i != none)
       ),
-      if dk.abstract != none {
-        [*Resumé:*\ #box(width: 100%, stroke: .5pt, inset: 4pt, dk.abstract)]
-      },
+      if fr.abstract != none {
+        [*Résumé:*\ #box(width: 100%, stroke: .5pt, inset: 4pt, fr.abstract)]
+      } else { [] },
 
       grid.cell(
         colspan: 2,
         text(size: 10pt)[
-          _Rapportens indhold er frit tilgængeligt, men offentliggørelse (med kildeangivelse) må kun ske efter aftale med forfatterne._
+         // _The content of this report is freely available, but publication (with reference) may only be pursued due to agreement with the author._
         ],
       ),
     ),
@@ -159,28 +165,27 @@
   set text(lang: "en")
 }
 
-
-#let frontmatter(meta, en, dk, dk-is-set, clear-double-page, body) = {
+#let frontmatter(meta, primary-lang, en-is-set, fr, fr-is-set, clear-double-page, body) = {
   // Front/cover page.
   page(
-    background: image("/AAUgraphics/aau_waves.svg", width: 100%, height: 100%),
+    background: image("/classic-evry-report/AAUgraphics/aau_waves.svg", width: 100%, height: 100%),
     margin: auto,
     numbering: none,
     grid(
       columns: 100%, // needed to not set uneven margins
       rows: (50%, 20%, 30%),
       align(center + bottom, box(
-        fill: aau-blue,
+        fill: theme-blue,
         inset: 18pt,
         radius: 1pt,
         clip: false,
         {
           set text(fill: white, 12pt)
           align(center)[
-            #text(2em, weight: 700, en.title)\
+            #text(2em, weight: 700, primary-lang.title)\
             #v(5pt)
-            #if en.theme != none [
-              #en.theme\
+            #if primary-lang.theme != none [
+              #primary-lang.theme\
               #v(10pt)
             ]
             #meta.participants.join(", ", last: " & ")\
@@ -197,7 +202,7 @@
         },
       )),
       none,
-      align(center, image("/AAUgraphics/aau_logo_circle_en.svg", width: 25%))
+      align(center, image("/classic-evry-report/AAUgraphics/Logo_noir_centré.svg", width: 25%))
     ),
   )
 
@@ -208,17 +213,21 @@
     #set text(size: 10pt)
     #set par(first-line-indent: 0em)
 
-    Copyright #sym.copyright Aalborg University #datetime.today().year()\
-    #v(0.2cm)
-    This report is typeset using the Typst system.
+    // Copyright #sym.copyright Aalborg University #datetime.today().year()\
+    // #v(0.2cm)
+    // This report is typeset using the Typst system.
   ])
 
-  titlepage-en(meta, en)
-
-  if dk-is-set {
-    clear-page(clear-double-page)
-    titelside-dk(meta, dk)
+  if en-is-set {
+    titlepage-en(meta, en)
   }
+
+  if fr-is-set {
+    clear-page(clear-double-page)
+    titelside-fr(meta, fr)
+  }
+
+
 
   body
 }
@@ -226,21 +235,23 @@
 #let project(
   meta: (:),
   en: (:),
-  dk: (:),
+  fr: (:),
   is-draft: false,
   margins: (inside: 2.8cm, outside: 4.1cm),
-  clear-double-page: true,
-  font: "Palatino Linotype",
+  clear-double-page: false,
+    font: "Palatino Linotype",
   body,
 ) = {
-  let dk-is-set = dk != (:)
-
+  let en-is-set = en != (:)
+  let fr-is-set = fr != (:)
   meta = dict-merge(defaults.meta, meta)
   en = dict-merge(defaults.en, en)
-  dk = dict-merge(defaults.dk, dk)
+  fr = dict-merge(defaults.fr, fr)
+  let primary-lang = if en-is-set { en } else { fr }
+
 
   // Set the document's basic properties.
-  set document(author: meta.participants, title: en.title)
+  set document(author: meta.participants, title: primary-lang.title)
 
   // Set document preferences, font family, heading format etc.
   // multiple fonts specify the default and a fallback
@@ -301,7 +312,7 @@
   set page(numbering: "I", footer: none, margin: margins)
 
   if not is-draft {
-    show: frontmatter.with(meta, en, dk, dk-is-set, clear-double-page)
+    show: frontmatter.with(meta, primary-lang, en-is-set, fr, fr-is-set, clear-double-page)
   }
 
   set page(footer: custom-footer(<titlepages-chapter>))

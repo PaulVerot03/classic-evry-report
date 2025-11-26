@@ -31,52 +31,22 @@
 
 #show: project.with(
   meta: (
-    project-group: "CS-xx-DAT-y-zz",
+    project-group: "Master 1 CNS-SR",
     participants: (
-      "Alice",
-      "Bob",
-      "Chad",
+      "Eudes KOKPATA, 20220808",
+      "Paul VEROT, 20212888",
     ),
-    supervisors: "John McClane",
-    // ...can also be specified as a list
+    supervisors: "M.Sobieraj",
     // supervisors: ("John McClane", "Hans Gruber"),
-    // field of study shown on the front page (can be omitted)
-    field-of-study: "Computer Science",
-    // specify if not a semester project
-    // project-type: "Bachelor Project"
+    //field-of-study: "CS",
+    project-type: "Projet de semestre 7"
   ),
 
-  en: (
-    title: "An Awesome Project",
-    theme: "Writing a project in Typst",
-    abstract: [#lorem(50)],
-    // NOTE: department and department-url can be set for BOTH en and dk
-    // the defaults are the department of CS
-    // department: "Department of Computer Science",
-    // department-url: "https://www.cs.aau.dk",
-  ),
-
-  // omit the `dk` option completely to remove the Danish titlepage
-  dk: (
-    title: "Et Fantastisk Projekt",
-    theme: "Et projekt i Typst",
+  fr: (
+    title: "",
+    theme: "Réseaux de Petri",
     abstract: [#lorem(50)],
   ),
-
-  // DRAFT MODE - for everyday-editing, if you so desire
-  // is-draft: true,
-
-  // specify some other margin type if so desired
-  // see: https://typst.app/docs/reference/layout/page/#parameters-margin
-  // margins: (x: 2cm),
-
-  // specify how to break pages between chapters (single or double)
-  // NOTE: if setting this to false it also has to be passed to
-  // _all_ the show-rules shown below, as they define how chapters are shown
-  // clear-double-page: false,
-
-  // lastly, if you wish to use another font (or want to get rid of the warning)
-  // font: "New Computer Modern", // is shipped with Typst
 )
 
 // put anything here that is to be included in the frontmatter, (with roman page numbers)
@@ -87,7 +57,6 @@
 #outline(depth: 2)
 
 // show a list of current todos
-#note-outline()
 
 // use `show: mainmatter.with(skip-double: false)` to omit double page skips
 // the same syntax appylies to 'chapters', 'backmatter' and 'appendix'.

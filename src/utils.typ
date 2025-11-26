@@ -41,15 +41,17 @@
 #let today = datetime.today()
 #let summer = datetime(year: today.year(), month: 7, day: 1)
 #let is-spring-semester = today < summer
-#let semester-dk = if is-spring-semester {
-  "Forårssemesteret"
-} else {
-  "Efterårssemesteret"
-}
+
 #let semester-en = if is-spring-semester {
   "Spring Semester"
 } else {
   "Fall Semester"
+}
+
+#let semester-fr = if is-spring-semester {
+  "Semestre de printemps"
+} else {
+  "Semestre d'automne"
 }
 
 #let is-chapter-page(chapter-label) = {

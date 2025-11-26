@@ -1,4 +1,4 @@
-This is a fork of [classic-aau-report](https://typst.app/universe/package/classic-aau-report), which I modified to fit my university stuling guideline for my personal use.
+This is a fork of [classic-aau-report](https://typst.app/universe/package/classic-aau-report), which I modified to fit my university styling guideline for my personal use.
 
 ## Configuration
 
