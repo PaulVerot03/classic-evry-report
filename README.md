@@ -1,129 +1,143 @@
-This is a fork of [classic-aau-report](https://typst.app/universe/package/classic-aau-report), which I modified to fit my university styling guideline for my personal use.
+# classic-evry-report
 
-## Configuration
+A Typst report template for Université Évry Paris-Saclay students.
 
-The `project` function takes the following (optional) arguments:
+This is a fork of [classic-aau-report](https://typst.app/universe/package/classic-aau-report), modified to fit my uni's colours and logos (Université Évry Paris-Saclay), for my personal use. 
 
-- `meta`: Metadata about the project
-  - `project-group`: The project group name
-  - `participants`: A list of participants
-  - `supervisors`: A list of supervisors
-  - `field-of-study`: The field of study
-  - `project-type`: The type of project
+## Local Installation
 
-- `en`: English project info
-  - `title`: The title of the project
-  - `theme`: The theme of the project
-  - `abstract`: The English abstract of the project
-  - `department`: The department name
-  - `department-url`: The department URL
+Since this template is designed for local use with your Typst files located outside this directory, you'll need to install it as a local package:
 
-- `dk`: Danish project info (can be omitted entirely)
-  - `title`: The Danish title of the project
-  - `theme`: The theme of the project in Danish
-  - `abstract`: The Danish abstract of the project
-  - `department`: The department name in Danish
-  - `department-url`: The Danish department URL
-
-- `is-draft`: A boolean indicating whether or not to include the frontmatter
-- `margins`: A margin specification according to the [docs](https://typst.app/docs/reference/layout/page/#parameters-margin)
-- `clear-double-page`: Whether or not to clear to the next odd page on chapters
-- `font`: The font to use
-
-The defaults are as follows:
-
-```typ
-meta: (
-  project-group: "No group name provided",
-  participants: (),
-  supervisors: (),
-  field-of-study: none,
-  project-type: "Semester Project"
-),
-en: (
-  title: "Untitled",
-  theme: none,
-  abstract: none,
-  department: "Department of Computer Science",
-  department-url: "https://www.cs.aau.dk",
-),
-dk: (
-  title: "Uden titel",
-  theme: none,
-  abstract: none,
-  department: "Institut for Datalogi",
-  department-url: "https://www.dat.aau.dk",
-),
-is-draft: false,
-margins: (inside: 2.8cm, outside: 4.1cm),
-clear-double-page: true,
-font: "Palatino Linotype",
+```bash
+git clone <your-repo-url>
+cd classic-evry-report
+just install
 ```
 
-Furthermore, the template exports the show rules:
+This installs the package locally and makes it available via the `@local` namespace.
 
-- `mainmatter`: Sets the page numbering to arabic and chapter numbering to none
-- `chapters`: Sets the chapter numbering `Chapter` followed by a number.
-- `backmatter`: Sets the chapter numbering back to none
-- `appendix`: Sets the chapter numbering to `Appendix` followed by a letter.
+## Usage
 
-All of the above show rules take the optional parameter `skip-double`,
-which only skips to the next page (as opposed to next _odd_) on chapters, when set to `false`.
-
-To use it in an existing project, add the following show rules:
+In your Typst project (which can be anywhere on your system), import the template:
 
 ```typ
-#import "@preview/classic-aau-report:0.3.1": project, mainmatter, chapters, backmatter, appendix
+#import "@local/classic-evry-report:0.3.1": project, mainmatter, chapters, backmatter, appendix
 
-// Any of the below can be omitted, the defaults are either empty values or CS specific
 #show: project.with(
   meta: (
-    project-group: "CS-xx-DAT-y-zz",
+    project-group: "M1 Informatique",
     participants: (
-      "Alice",
-      "Bob",
-      "Chad",
+      "Alice Dupont",
+      "Bob Martin",
     ),
-    supervisors: "John McClane"
+    supervisors: "Dr. Marie Curie",
+    field-of-study: "Computer Science",
+    project-type: "Semester Project",
   ),
   en: (
-    title: "An Awesome Project",
-    theme: "Writing a project in Typst",
-    abstract: [],
+    title: "My  Project",
+    theme: "Petri Net",
+    abstract: [This is a brief summary of the project...],
   ),
-  // omit the `dk` option completely to remove the Danish titlepage
-  dk: (
-    title: "Et Fantastisk Projekt",
-    theme: "Et projekt i Typst",
-    abstract: lorem(50),
+  fr: (
+    title: "Mon Projet ",
+    theme: "Réseau de Petri",
+    abstract: [Ceci est un bref résumé du projet...],
   ),
-  is-draft: true
 )
 
 #show: mainmatter
-// OR: #show: mainmatter.with(skip-double: false)
 #include "chapters/introduction.typ"
 
 #show: chapters
-#include "chapters/problem-analysis.typ"
+#include "chapters/analysis.typ"
+#include "chapters/implementation.typ"
 
 #show: backmatter
 #include "chapters/conclusion.typ"
 #bibliography("references.bib", title: "References")
 
 #show: appendix
-#include "appendices/some-appendix.typ"
+#include "appendices/code.typ"
 ```
 
-## Customizing
+## Configuration Options
 
-If you wish to customize the template further (for local use), clone the source and install the package locally.
+### `meta`: Project Metadata
 
-```bash
-git clone https://github.com/Tinggaard/classic-aau-report
-cd classic-aau-report
-# make your edits
-just install
+- `project-group`: Project group identifier (default: `"No group name provided"`)
+- `participants`: Array of participant names (default: `()`)
+- `supervisors`: Supervisor name or array of names (default: `()`)
+- `field-of-study`: Field of study (default: `none`)
+- `project-type`: Type of project (default: `"Semester Project"`)
+
+### `en`: English Language Settings
+
+- `title`: Project title (default: `"Untitled"`)
+- `theme`: Project theme/subtitle (default: `none`)
+- `abstract`: English abstract content (default: `none`)
+- `department`: Department name (default: `"Department of Computer Science"`)
+- `department-url`: Department URL (default: Évry CS department URL)
+
+### `fr`: French Language Settings
+
+- `title`: Project title in French (default: `"Sans titre"`)
+- `theme`: Project theme/subtitle in French (default: `none`)
+- `abstract`: French abstract content (default: `none`)
+- `department`: Department name in French (default: `"Département d'informatique"`)
+- `department-url`: Department URL (default: Évry CS department URL)
+
+**Note:** You can omit the `fr` parameter entirely to create an English-only document, or omit `en` for a French-only document.
+
+### Other Options
+
+- `is-draft`: Set to `true` to skip frontmatter generation (default: `false`)
+- `margins`: Page margins (default: `(inside: 2.8cm, outside: 4.1cm)`)
+- `clear-double-page`: Clear to next odd page on chapters (default: `false`)
+- `font`: Font family to use (default: `"Palatino Linotype"`)
+
+## Show Rules
+
+The template provides the following show rules to structure your document:
+
+- **`mainmatter`**: Use for preface, introduction, and other front content (Arabic page numbering, no chapter numbers)
+- **`chapters`**: Use for main content chapters (numbered as "Chapter 1", "Chapter 2", etc.)
+- **`backmatter`**: Use for conclusion and similar sections (no chapter numbers)
+- **`appendix`**: Use for appendices (numbered as "Appendix A", "Appendix B", etc.)
+
+Each show rule accepts an optional `skip-double` parameter:
+- `skip-double: true` (default): Skips to next odd page for chapters
+- `skip-double: false`: Skips to next page only
+
+Example:
+```typ
+#show: chapters.with(skip-double: false)
 ```
 
-This will make the package available via the `@local` namespace (`@local/classic-aau-report:0.3.1`)
+## Example Project Structure
+
+```
+my-project/
+├── main.typ
+├── references.bib
+├── chapters/
+│   ├── introduction.typ
+│   ├── analysis.typ
+│   └── conclusion.typ
+└── appendices/
+    └── code.typ
+```
+
+## Customizing the Template
+
+To modify the template itself:
+
+1. Clone this repository
+2. Make your edits to files in the `src/` directory
+3. Run `just install` to reinstall the local package
+4. Your changes will be available the next time you compile your Typst document
+
+## Requirements
+
+- Typst compiler version 0.13.0 or higher
+- Font: Palatino Linotype (or modify the `font` parameter)
