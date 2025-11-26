@@ -6,15 +6,49 @@ This is a fork of [classic-aau-report](https://typst.app/universe/package/classi
 
 ## Local Installation
 
-Since this template is designed for local use with your Typst files located outside this directory, you'll need to install it as a local package:
+Since this template is designed for local use with your Typst files located outside this directory, you'll need to install it as a local package.
+
+### Method 1: Using the install script (recommended)
 
 ```bash
 git clone <your-repo-url>
 cd classic-evry-report
-just install
+bash scripts/package "@local"
 ```
 
-This installs the package locally and makes it available via the `@local` namespace.
+### Method 2: Manual installation
+
+If the script doesn't work, install manually:
+
+```bash
+# Navigate to the template directory
+cd classic-evry-report
+
+# Create the local package directory
+mkdir -p ~/.local/share/typst/packages/local/classic-evry-report/0.3.1
+
+# Copy the necessary files
+cp -r lib.typ src/ AAUgraphics/ ~/.local/share/typst/packages/local/classic-evry-report/0.3.1/
+```
+
+### Verifying installation
+
+Check that the package is installed:
+
+```bash
+ls ~/.local/share/typst/packages/local/classic-evry-report/0.3.1/
+```
+
+You should see `lib.typ`, `src/`, and `AAUgraphics/` directories.
+
+### Updating the package
+
+After making changes to the template, re-run the installation command to update:
+
+```bash
+bash scripts/package "@local"
+# OR manually copy files again
+```
 
 ## Usage
 
@@ -134,7 +168,7 @@ To modify the template itself:
 
 1. Clone this repository
 2. Make your edits to files in the `src/` directory
-3. Run `just install` to reinstall the local package
+3. Reinstall the local package using `bash scripts/package "@local"`
 4. Your changes will be available the next time you compile your Typst document
 
 ## Requirements
