@@ -42,17 +42,6 @@
 #let summer = datetime(year: today.year(), month: 7, day: 1)
 #let is-spring-semester = today < summer
 
-#let semester-en = if is-spring-semester {
-  "Spring Semester"
-} else {
-  "Fall Semester"
-}
-
-#let semester-fr = if is-spring-semester {
-  "Semestre de printemps"
-} else {
-  "Semestre d'automne"
-}
 
 #let is-chapter-page(chapter-label) = {
   let current = counter(page).get()
@@ -62,16 +51,21 @@
 }
 
 // only applies when pages are not roman numbered, thus no label argument
-#let custom-header(name: none) = context {
+#let custom-header(name: none, lang: "en") = context {
   if not is-chapter-page(<chapter>) {
+    let page-format = if lang == "fr" {
+      "1 sur 1"
+    } else {
+      "1 of 1"
+    }
     if calc.even(here().page()) [
-      #counter(page).display("1 of 1", both: true)
+      #counter(page).display(page-format, both: true)
       #h(1fr)
       #name #hydra(1)
     ] else [
       #hydra(2)
       #h(1fr)
-      #counter(page).display("1 of 1", both: true)
+      #counter(page).display(page-format, both: true)
     ]
   }
 }
@@ -91,10 +85,11 @@
   numbering: none,
   name: none,
   double-page-skip: true,
+  lang: "en",
   body,
 ) = {
   set heading(numbering: numbering, outlined: true)
-  set page(header: custom-header(name: name))
+  set page(header: custom-header(name: name, lang: lang))
   counter(heading).update(
     0,
   ) // Reset the chapter counter (appendices start at A)

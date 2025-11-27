@@ -5,6 +5,7 @@
     project-group: "No group name provided",
     participants: (),
     supervisors: (),
+    email: (),
     field-of-study: none,
     project-type: "Semester Project",
   ),
@@ -12,29 +13,33 @@
     title: "Untitled",
     theme: none,
     department: "Department of Computer Science",
-    department-url: "https://www.univ-evry.fr/universite/organisation/composantes/stockage-des-departements/departement-genie-informatique.html",
+    department-url: "univ-evry.fr",
+    personal-url:"paulverot.fr",
   ),
   fr: (
     title: "Sans titre",
     theme: none,
     department: "Département d'informatique",
-    department-url: "https://www.univ-evry.fr/universite/organisation/composantes/stockage-des-departements/departement-genie-informatique.html",
+    department-url: "univ-evry.fr",
+    personal-url:"paulverot.fr",
   ),
 
 )
 
 #let theme-blue = rgb("#003b69")
 
-#let mainmatter(skip-double: true, body) = {
+#let mainmatter(skip-double: true, lang: "en", body) = {
   //clear-page(skip-double)
-  set page(numbering: "1", header: custom-header(), footer: custom-footer(
+  set page(numbering: "1", header: custom-header(lang: lang), footer: custom-footer(
     <chapter>,
   ))
   counter(page).update(1)
+  set par(first-line-indent: 0pt)
   set-chapter-style(
     numbering: none,
     name: none,
     double-page-skip: skip-double,
+    lang: lang,
     body,
   )
 }
@@ -66,6 +71,27 @@
   )
 }
 
+#let smallprint(size: 9pt, git-text: none, git-url: none, body) = {
+  set text(size: size)
+  set par(first-line-indent: 0pt, spacing: 0.5em)
+  place(
+    bottom + center,
+    float: true,
+    clearance: 2em,
+    {
+      if git-text != none and git-url != none {
+        [#git-text #link(git-url)]
+        if body != none {
+          v(0.5em)
+          body
+        }
+      } else if body != none {
+        body
+      }
+    }
+  )
+}
+
 // English Abstract page.
 #let titlepage-en(meta, en) = {
   let info = (
@@ -74,6 +100,7 @@
     [*Project Period:*\ #semester-en #today.year()],
     show-if-not-none(meta.project-group)[*Group:*\ ],
     [*Participants:*\ #meta.participants.join("\n")],
+    [*Email:*\ #meta.email.join("\n")],
     if type(meta.supervisors) == array [
       *Supervisors:*\ #meta.supervisors.join("\n")
     ] else [
@@ -92,7 +119,8 @@
       align(right + horizon)[
         #strong(en.department)\
         Université Évry Paris-Saclay\
-        #link(en.department-url)
+        #link("www." + en.department-url)[#en.department-url] \
+        #link("https://" + en.personal-url)[#en.personal-url]
       ],
 
       grid(
@@ -124,13 +152,14 @@
     show-if-not-none(fr.theme)[*Thème:*\ ],
     show-if-not-none(meta.project-group)[*Groupe:*\ ],
     [*Participants:*\ #meta.participants.join("\n")],
+    [*Email:*\ #meta.email.join("\n")],
     if type(meta.supervisors) == array [
       *Superviseurs:*\ #meta.supervisors.join("\n")
     ] else [
       *Superviseur:*\ #meta.supervisors
     ],
     //[*Copies:* 1],
-    [*Nombre de pages:* #context counter(page).final().first()],
+    [*Nombre de pages:* \ #context counter(page).final().first()],
     [*Dernier changement:*\ #datetime.today().display("[day]-[month]-[year]")],
   )
   page(
@@ -141,8 +170,9 @@
       image("/classic-evry-report/graphics/Logo_noir_centré.svg", width: 90%),
       align(right + horizon)[
         #strong(fr.department)\
-        Université Évry Paris-Saclay\
-        //#link(fr.department-url)
+        //Université Évry Paris-Saclay\
+        #link("www." + fr.department-url)[#fr.department-url]\
+        #link("https://" + fr.personal-url)[#fr.personal-url]
       ],
 
       grid(
@@ -257,7 +287,7 @@
   // Set document preferences, font family, heading format etc.
   // multiple fonts specify the default and a fallback
   set text(font: font, lang: "en")
-  set par(first-line-indent: 1em, spacing: 0.65em, justify: true)
+  set par(first-line-indent: 0pt, spacing: 0.65em, justify: true)
 
   set figure(numbering: dependent-numbering("1.1"))
   set math.equation(numbering: dependent-numbering("(1.1)"))
@@ -320,3 +350,4 @@
 
   body
 }
+
