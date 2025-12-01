@@ -21,7 +21,7 @@
     theme: none,
     department: "Département d'informatique",
     department-url: "univ-evry.fr",
-    personal-url:"paulverot.fr",
+    personal-url:"",
   ),
 
 )
