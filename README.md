@@ -10,7 +10,7 @@ This is a fork of [classic-aau-report](https://typst.app/universe/package/classi
 git clone https://github.gom/PaulVerot03/classiv-evry-report.git
 
 # Either make a full copy or a symlink into your working directory
-ln - p classic-evry-report/ /wherever
+ln -s /wherever/this/might/be/classic-evry-report/ classic-evry-report
 
 ```
 Recommended if you wnat to use this regularly: 
@@ -34,7 +34,7 @@ setup-typst(){
 
 	ln -s "$TEMPLATE_DIR" classic-evry-report
   cp ~/Documents/main.typ "$TARGET_DIR"
-	echo "✓ Created symlink to classic-evry-report template"
+	echo "Created symlink to classic-evry-report template"
 	echo "You can now use: #import \"classic-evry-report/lib.typ\": ..."
 ```
 I appended this into my `.bashrc` so that it creates a symlink and copies a example file when I use the `setup-typst` command 
