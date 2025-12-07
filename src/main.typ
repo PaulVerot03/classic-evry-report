@@ -28,6 +28,8 @@
 
 #let theme-blue = rgb("#003b69")
 
+#let blue(body) = text(fill: rgb("#003b69"), body)
+
 #let mainmatter(skip-double: true, lang: "en", body) = {
   //clear-page(skip-double)
   set page(numbering: "1", header: custom-header(lang: lang), footer: custom-footer(

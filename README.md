@@ -1,61 +1,55 @@
 # classic-evry-report
-
-A Typst report template for Université Évry Paris-Saclay students.
-
 This is a fork of [classic-aau-report](https://typst.app/universe/package/classic-aau-report), modified to fit my uni's colours and logos (Université Évry Paris-Saclay), for my personal use. 
 
-## Local Installation
-**Installation Instructions are eroneous, they will not work, i am fixing them**
-Since this template is designed for local use with your Typst files located outside this directory, you'll need to install it as a local package.
 
-### Method 1: Using the install script (recommended)
+# Installation
+
 
 ```bash
-git clone <your-repo-url>
-cd classic-evry-report
-bash scripts/package "@local"
+# Download the repository and place it wherever conveniant 
+git clone https://github.gom/PaulVerot03/classiv-evry-report.git
+
+# Either make a full copy or a symlink into your working directory
+ln - p classic-evry-report/ /wherever
+
 ```
-
-### Method 2: Manual installation
-
-If the script doesn't work, install manually:
-
+Recommended if you wnat to use this regularly: 
+make script to do it automaticaly
 ```bash
-# Navigate to the template directory
-cd classic-evry-report
+setup-typst(){
+	TEMPLATE_DIR="~/Documents/classic-evry-report"
+	TARGET_DIR="${1:-.}"
 
-# Create the local package directory
-mkdir -p ~/.local/share/typst/packages/local/classic-evry-report/0.3.1
+	if [ ! -d "$TARGET_DIR" ]; then
+	    echo "Error: Directory $TARGET_DIR does not exist"
+	    exit 1
+	fi
 
-# Copy the necessary files
-cp -r lib.typ src/ AAUgraphics/ ~/.local/share/typst/packages/local/classic-evry-report/0.3.1/
+	cd "$TARGET_DIR" || exit 1
+
+	if [ -e "classic-evry-report" ]; then
+	    echo "classic-evry-report already exists in this directory"
+	    exit 0
+	fi
+
+	ln -s "$TEMPLATE_DIR" classic-evry-report
+  cp ~/Documents/main.typ "$TARGET_DIR"
+	echo "✓ Created symlink to classic-evry-report template"
+	echo "You can now use: #import \"classic-evry-report/lib.typ\": ..."
 ```
+I appended this into my `.bashrc` so that it creates a symlink and copies a example file when I use the `setup-typst` command 
 
-### Verifying installation
 
-Check that the package is installed:
-
-```bash
-ls ~/.local/share/typst/packages/local/classic-evry-report/0.3.1/
-```
-
-You should see `lib.typ`, `src/`, and `AAUgraphics/` directories.
-
-### Updating the package
-
-After making changes to the template, re-run the installation command to update:
-
-```bash
-bash scripts/package "@local"
-# OR manually copy files again
-```
 
 ## Usage
 
 In your Typst project (which can be anywhere on your system), import the template:
 
 ```typ
-#import "@local/classic-evry-report:0.3.1": project, mainmatter, chapters, backmatter, appendix
+#import "classic-evry-report/lib.typ": (
+  appendix, backmatter, chapters, mainmatter, project, smallprint,
+)
+#import "classic-evry-report/template/setup/macros.typ": *
 
 #show: project.with(
   meta: (
@@ -148,6 +142,9 @@ Example:
 #show: chapters.with(skip-double: false)
 ```
 
+## Compiling 
+To compile to a PDF file, run `typst compile 'your_file'.typ`
+
 ## Example Project Structure
 
 ```
@@ -168,8 +165,7 @@ To modify the template itself:
 
 1. Clone this repository
 2. Make your edits to files in the `src/` directory
-3. Reinstall the local package using `bash scripts/package "@local"`
-4. Your changes will be available the next time you compile your Typst document
+3. Your changes will be available the next time you compile your Typst document if you went with the symlink
 
 ## Requirements
 
