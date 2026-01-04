@@ -62,19 +62,17 @@ In your Typst project (which can be anywhere on your system), import the templat
     field-of-study: "Computer Science",
     project-type: "Semester Project",
   ),
-  en: (
-    title: "My  Project",
-    theme: "Petri Net",
-    abstract: [This is a brief summary of the project...],
-  ),
   fr: (
-    title: "Mon Projet ",
+    title: "Mon Projet",
     theme: "Réseau de Petri",
     abstract: [Ceci est un bref résumé du projet...],
   ),
+  lang: "fr",  // Set document language (affects page numbering, etc.)
 )
 
-#show: mainmatter
+#outline(depth: 2)
+
+#show: mainmatter  // Language auto-inherited from project
 #include "chapters/introduction.typ"
 
 #show: chapters
@@ -83,7 +81,7 @@ In your Typst project (which can be anywhere on your system), import the templat
 
 #show: backmatter
 #include "chapters/conclusion.typ"
-#bibliography("references.bib", title: "References")
+#bibliography("references.bib", title: "Références")
 
 #show: appendix
 #include "appendices/code.typ"
@@ -119,27 +117,33 @@ In your Typst project (which can be anywhere on your system), import the templat
 
 ### Other Options
 
+- `lang`: Document language - `"en"` or `"fr"` (default: `"en"`)
+  - Sets the language for page numbering format ("X of Y" vs "X sur Y")
+  - Automatically inherited by `mainmatter`, `chapters`, `backmatter`, and `appendix`
 - `is-draft`: Set to `true` to skip frontmatter generation (default: `false`)
 - `margins`: Page margins (default: `(inside: 2.8cm, outside: 4.1cm)`)
 - `clear-double-page`: Clear to next odd page on chapters (default: `false`)
-- `font`: Font family to use (default: `"Palatino Linotype"`)
+- `font`: Font family to use (default: `"Libertinus Serif"`)
 
 ## Show Rules
 
 The template provides the following show rules to structure your document:
 
 - **`mainmatter`**: Use for preface, introduction, and other front content (Arabic page numbering, no chapter numbers)
-- **`chapters`**: Use for main content chapters (numbered as "Chapter 1", "Chapter 2", etc.)
+  - Automatically uses the language set in `project.with(lang: ...)`
+  - Figures are numbered as section_number.figure_number (e.g., 1.1, 1.2, 2.1)
+- **`chapters`**: Use for main content chapters (numbered as "Chapter 1" or "Chapitre 1", etc.)
 - **`backmatter`**: Use for conclusion and similar sections (no chapter numbers)
-- **`appendix`**: Use for appendices (numbered as "Appendix A", "Appendix B", etc.)
+- **`appendix`**: Use for appendices (numbered as "Appendix A" or "Annexe A", etc.)
 
-Each show rule accepts an optional `skip-double` parameter:
-- `skip-double: true` (default): Skips to next odd page for chapters
-- `skip-double: false`: Skips to next page only
+Each show rule accepts optional parameters:
+- `skip-double`: `true` (default) skips to next odd page for chapters, `false` skips to next page only
+- `lang`: Override the document language for this section (defaults to auto-inherit from `project`)
 
-Example:
+Examples:
 ```typ
-#show: chapters.with(skip-double: false)
+#show: mainmatter.with(skip-double: true)  // lang auto-inherited from project
+#show: chapters.with(skip-double: false, lang: "fr")  // Override language
 ```
 
 ## Compiling 
@@ -170,4 +174,5 @@ To modify the template itself:
 ## Requirements
 
 - Typst compiler version 0.13.0 or higher
-- Font: Palatino Linotype (or modify the `font` parameter)
+- Font: Libertinus Serif (included with most Typst installations)
+  - Alternative: modify the `font` parameter in `project.with()` to use any available font

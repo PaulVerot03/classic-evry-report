@@ -286,7 +286,7 @@
   is-draft: false,
   margins: (inside: 2.8cm, outside: 4.1cm),
   clear-double-page: false,
-  font: "Palatino Linotype",
+  font: "Libertinus Serif",
   body,
 ) = {
   let en-is-set = en != (:)
