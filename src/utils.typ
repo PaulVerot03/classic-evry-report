@@ -11,8 +11,14 @@
   return array
 }
 
-#let dependent-numbering(style, levels: 1) = n => {
-  numbering(style, ..normalize-length(counter(heading).get(), levels), n)
+#let dependent-numbering(style, levels: 1) = n => context {
+  let heading-numbers = counter(heading).get()
+  if heading-numbers.len() > 0 and heading-numbers.first() > 0 {
+    numbering(style, ..normalize-length(heading-numbers, levels), n)
+  } else {
+    // Fallback when heading counter is 0 or empty
+    numbering("1", n)
+  }
 }
 
 
@@ -70,25 +76,11 @@
   }
 }
 
-#let custom-frontmatter-header(lang: "en") = context {
-  let page-format = if lang == "fr" {
-    "I sur I"
-  } else {
-    "I of I"
-  }
-  if calc.even(here().page()) [
-    #counter(page).display(page-format, both: true)
-    #h(1fr)
-  ] else [
-    #h(1fr)
-    #counter(page).display(page-format, both: true)
-  ]
-}
+
 
 #let custom-footer(chapter-label) = context {
-  if is-chapter-page(chapter-label) and page.numbering != none {
-    align(center, counter(page).display(page.numbering))
-  }
+  // Don't show page numbers on chapter pages
+  none
 }
 
 #let clear-page(skip-double) = {
@@ -108,7 +100,7 @@
   counter(heading).update(
     0,
   ) // Reset the chapter counter (appendices start at A)
-  // numbering of figures and equations
+  // numbering of figures and equations - only override if numbering is set
   set figure(numbering: dependent-numbering(numbering)) if (
     numbering != none
   )
@@ -122,6 +114,10 @@
   show heading.where(level: 1): it => {
     clear-page(double-page-skip)
 
+    // Increment heading counter for figure numbering even when numbering is none
+    if numbering == none {
+      counter(heading).step()
+    }
 
     counter(figure.where(kind: image)).update(0)
     counter(figure.where(kind: table)).update(0)

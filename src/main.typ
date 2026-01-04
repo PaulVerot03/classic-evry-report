@@ -30,18 +30,26 @@
 
 #let blue(body) = text(fill: rgb("#003b69"), body)
 
-#let mainmatter(skip-double: true, lang: "en", body) = {
+#let project-lang = state("project-lang", "en")
+
+#let mainmatter(skip-double: true, lang: auto, body) = context {
+  // Use project language if lang is auto
+  let effective-lang = if lang == auto { project-lang.get() } else { lang }
+
   //clear-page(skip-double)
-  set page(numbering: "1", header: custom-header(lang: lang), footer: custom-footer(
+  set page(numbering: "1", header: custom-header(lang: effective-lang), footer: custom-footer(
     <chapter>,
   ))
   counter(page).update(1)
   set par(first-line-indent: 0pt)
+  // Enable figure numbering with section numbers even when heading numbering is off
+  set figure(numbering: dependent-numbering("1.1"))
+  set math.equation(numbering: dependent-numbering("(1.1)"))
   set-chapter-style(
     numbering: none,
     name: none,
     double-page-skip: skip-double,
-    lang: lang,
+    lang: effective-lang,
     body,
   )
 }
@@ -288,6 +296,8 @@
   fr = dict-merge(defaults.fr, fr)
   let primary-lang = if en-is-set { en } else { fr }
 
+  // Store the language in state for use by mainmatter
+  project-lang.update(lang)
 
   // Set the document's basic properties.
   set document(author: meta.participants, title: primary-lang.title)
@@ -348,7 +358,6 @@
     v(12pt, weak: true)
     strong(it)
   }
-  set page(numbering: "I", header: custom-frontmatter-header(lang: lang), footer: none, margin: margins)
 
   if not is-draft {
     show: frontmatter.with(meta, primary-lang, en-is-set, fr, fr-is-set, clear-double-page, lang)
