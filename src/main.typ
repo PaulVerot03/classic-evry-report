@@ -46,29 +46,34 @@
   )
 }
 
-#let chapters(skip-double: true, body) = {
+#let chapters(skip-double: true, lang: "en", body) = {
+  let chapter-name = if lang == "fr" { "Chapitre" } else { "Chapter" }
   set-chapter-style(
     numbering: "1.1",
-    name: "Chapter",
+    name: chapter-name,
     double-page-skip: skip-double,
+    lang: lang,
     body,
   )
 }
 
-#let backmatter(skip-double: true, body) = {
+#let backmatter(skip-double: true, lang: "en", body) = {
   set-chapter-style(
     numbering: none,
     name: none,
     double-page-skip: skip-double,
+    lang: lang,
     body,
   )
 }
 
-#let appendix(skip-double: true, body) = {
+#let appendix(skip-double: true, lang: "en", body) = {
+  let appendix-name = if lang == "fr" { "Annexe" } else { "Appendix" }
   set-chapter-style(
     numbering: "A.1",
-    name: "Appendix",
+    name: appendix-name,
     double-page-skip: skip-double,
+    lang: lang,
     body,
   )
 }
@@ -196,7 +201,7 @@
   set text(lang: "en")
 }
 
-#let frontmatter(meta, primary-lang, en-is-set, fr, fr-is-set, clear-double-page, body) = {
+#let frontmatter(meta, primary-lang, en-is-set, fr, fr-is-set, clear-double-page, lang, body) = {
   // Front/cover page.
   page(
     background: image("/classic-evry-report/graphics/evry-waves.svg", width: 100%, height: 100%),
@@ -269,10 +274,11 @@
   meta: (:),
   en: (:),
   fr: (:),
+  lang: "en",
   is-draft: false,
   margins: (inside: 2.8cm, outside: 4.1cm),
   clear-double-page: false,
-    font: "Palatino Linotype",
+  font: "Palatino Linotype",
   body,
 ) = {
   let en-is-set = en != (:)
@@ -288,7 +294,7 @@
 
   // Set document preferences, font family, heading format etc.
   // multiple fonts specify the default and a fallback
-  set text(font: font, lang: "en")
+  set text(font: font, lang: lang)
   set par(first-line-indent: 0pt, spacing: 0.65em, justify: true)
 
   set figure(numbering: dependent-numbering("1.1"))
@@ -342,10 +348,10 @@
     v(12pt, weak: true)
     strong(it)
   }
-  set page(numbering: "I", footer: none, margin: margins)
+  set page(numbering: "I", header: custom-frontmatter-header(lang: lang), footer: none, margin: margins)
 
   if not is-draft {
-    show: frontmatter.with(meta, primary-lang, en-is-set, fr, fr-is-set, clear-double-page)
+    show: frontmatter.with(meta, primary-lang, en-is-set, fr, fr-is-set, clear-double-page, lang)
   }
 
   set page(footer: custom-footer(<titlepages-chapter>))

@@ -70,6 +70,21 @@
   }
 }
 
+#let custom-frontmatter-header(lang: "en") = context {
+  let page-format = if lang == "fr" {
+    "I sur I"
+  } else {
+    "I of I"
+  }
+  if calc.even(here().page()) [
+    #counter(page).display(page-format, both: true)
+    #h(1fr)
+  ] else [
+    #h(1fr)
+    #counter(page).display(page-format, both: true)
+  ]
+}
+
 #let custom-footer(chapter-label) = context {
   if is-chapter-page(chapter-label) and page.numbering != none {
     align(center, counter(page).display(page.numbering))
@@ -152,17 +167,15 @@
   set page(numbering: "1")
 }
 
-#let use-binary-numbering() = {
-  set page(numbering: n => {
-    let binary-string = ""
-    if n == 0 {
-      binary-string = "0"
-    } else {
-      while n > 0 {
-        binary-string = str(calc.rem(n, 2)) + binary-string
-        n = n / 2
-      }
-    }
-    binary-string
-  })
+#let custom-outline(lang: "en", title: auto, ..args) = {
+  let outline-title = if title == auto {
+    if lang == "fr" { "Table des matières" } else { "Contents" }
+  } else {
+    title
+  }
+
+  outline(
+    title: outline-title,
+    ..args
+  )
 }
