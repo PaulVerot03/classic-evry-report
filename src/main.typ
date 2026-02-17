@@ -46,7 +46,7 @@
   set figure(numbering: dependent-numbering("1.1"))
   set math.equation(numbering: dependent-numbering("(1.1)"))
   set-chapter-style(
-    numbering: none,
+    numbering: "1.1",
     name: none,
     double-page-skip: skip-double,
     lang: effective-lang,
@@ -67,7 +67,7 @@
 
 #let backmatter(skip-double: true, lang: "en", body) = {
   set-chapter-style(
-    numbering: none,
+    numbering: "1.1",
     name: none,
     double-page-skip: skip-double,
     lang: lang,
@@ -214,7 +214,7 @@
   page(
     background: image("/classic-evry-report/graphics/evry-waves.svg", width: 100%, height: 100%),
     margin: auto,
-    numbering: none,
+    numbering: "1.1",
     grid(
       columns: 100%,
       rows: (50%, 20%, 30%),
