@@ -7,7 +7,7 @@ This is a fork of [classic-aau-report](https://typst.app/universe/package/classi
 
 ```bash
 # Download the repository and place it wherever conveniant 
-git clone https://github.gom/PaulVerot03/classiv-evry-report.git
+git clone https://github.com/PaulVerot03/classic-evry-report.git
 
 # Either make a full copy or a symlink into your working directory
 ln -s /wherever/this/might/be/classic-evry-report/ classic-evry-report
