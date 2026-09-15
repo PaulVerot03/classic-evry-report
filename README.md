@@ -125,6 +125,25 @@ In your Typst project (which can be anywhere on your system), import the templat
 - `clear-double-page`: Clear to next odd page on chapters (default: `false`)
 - `font`: Font family to use (default: `"Libertinus Serif"`)
 
+## Iteration Motif (`spiral`)
+
+Call `#spiral()` anywhere in your document before your first heading (a
+line right after the imports is simplest) to give every level-1 heading
+(`=`) its own title page, each showing a Heighway dragon-curve motif in
+the report's blues — one more generation, and a bit larger, with every
+chapter. Layout borrowed from the
+[hei-synd-report](https://typst.app/universe/package/hei-synd-report)
+cover; an homage to the growing fractal illustrations opening each
+"Iteration" in *Jurassic Park* (2nd edition). Growth continues across
+`mainmatter`, `chapters`, `backmatter` and `appendix` alike.
+
+```typ
+#import "classic-evry-report/lib.typ": spiral
+#spiral()
+```
+
+Call `#spiral(false)` to turn it back off without deleting the line.
+
 ## Show Rules
 
 The template provides the following show rules to structure your document:

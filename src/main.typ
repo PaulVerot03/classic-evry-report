@@ -26,10 +26,6 @@
 
 )
 
-#let theme-blue = rgb("#003b69")
-
-#let blue(body) = text(fill: rgb("#003b69"), body)
-
 #let project-lang = state("project-lang", "en")
 
 #let mainmatter(skip-double: true, lang: auto, body) = context {
@@ -333,12 +329,14 @@
   show heading.where(level: 1): it => {
     clear-page(clear-double-page)
     set par(first-line-indent: 0pt, justify: false)
-    show: block
-    v(3cm)
-    text(
-      size: 24pt,
-    )[#it.body <titlepages-chapter>] // label allows for header/footer to work properly
-    v(.75cm)
+    block({
+      v(3cm)
+      text(
+        size: 24pt,
+      )[#it.body <titlepages-chapter>] // label allows for header/footer to work properly
+      v(.75cm)
+    })
+    iteration-page()
   }
   // style heading with spacing before and after + spacing between number and name
   show heading.where(level: 2): it => custom-heading(it, 10pt, 5pt)
