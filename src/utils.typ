@@ -142,9 +142,11 @@
 // This heading's index among all level-1 headings so far in the whole
 // document, ignoring any per-section counter(heading) resets, so the
 // motif keeps growing continuously across mainmatter/chapters/backmatter.
-#let iteration-number(loc) = query(
-  selector(heading.where(level: 1)).before(loc),
-).len()
+// Counts <chapter> labels rather than raw headings so stray level-1
+// headings outside those wrappers -- most notably outline()'s own
+// "Contents" title, which is itself a level-1 heading -- don't throw off
+// the count.
+#let iteration-number(loc) = query(selector(<chapter>).before(loc)).len()
 
 // Call from inside a level-1 heading show rule to append the growing
 // motif and break to a fresh page, turning the heading into a title page.

@@ -12,6 +12,7 @@
   en: (
     title: "Untitled",
     theme: none,
+    abstract: none,
     department: "Department of Computer Science",
     department-url: "univ-evry.fr",
     personal-url:"paulverot.fr",
@@ -19,6 +20,7 @@
   fr: (
     title: "Sans titre",
     theme: none,
+    abstract: none,
     department: "Département d'informatique",
     department-url: "univ-evry.fr",
     personal-url:"",
@@ -105,22 +107,6 @@
 
 // English Abstract page.
 #let titlepage-en(meta, en) = {
-  let info = (
-    show-if-not-none(en.title)[*Title:*\ ],
-    show-if-not-none(en.theme)[*Theme:*\ ],
-    [*Project Period:*\ #semester-en #today.year()],
-    show-if-not-none(meta.project-group)[*Group:*\ ],
-    [*Participants:*\ #meta.participants.join("\n")],
-    [*Email:*\ #meta.email.join("\n")],
-    if type(meta.supervisors) == array [
-      *Supervisors:*\ #meta.supervisors.join("\n")
-    ] else [
-      *Supervisor:*\ #meta.supervisors
-    ],
-    //[*Copies:* 1],
-    [*Number of Pages:* #context counter(page).final().first()],
-    [*Last change:*\ #datetime.today().display("[day]-[month]-[year]")],
-  )
   page(
     grid(
       columns: (1fr, 1fr),
@@ -205,7 +191,7 @@
   set text(lang: "en")
 }
 
-#let frontmatter(meta, primary-lang, en-is-set, fr, fr-is-set, clear-double-page, lang, body) = {
+#let frontmatter(meta, primary-lang, en, en-is-set, fr, fr-is-set, clear-double-page, lang, body) = {
   // Front/cover page.
   page(
     background: image("/classic-evry-report/graphics/evry-waves.svg", width: 100%, height: 100%),
@@ -336,7 +322,6 @@
       )[#it.body <titlepages-chapter>] // label allows for header/footer to work properly
       v(.75cm)
     })
-    iteration-page()
   }
   // style heading with spacing before and after + spacing between number and name
   show heading.where(level: 2): it => custom-heading(it, 10pt, 5pt)
@@ -358,7 +343,7 @@
   }
 
   if not is-draft {
-    show: frontmatter.with(meta, primary-lang, en-is-set, fr, fr-is-set, clear-double-page, lang)
+    show: frontmatter.with(meta, primary-lang, en, en-is-set, fr, fr-is-set, clear-double-page, lang)
   }
 
   set page(footer: custom-footer(<titlepages-chapter>))
