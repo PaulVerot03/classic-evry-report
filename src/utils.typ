@@ -252,7 +252,14 @@
       )[#it.body <chapter>] // allow us to query this label to make header work properly
       v(.75cm)
     })
-    iteration-page()
+    // Typst's own outline()/bibliography()/glossary() each render their
+    // own level-1 heading ("Contents", "References", ...) with an
+    // explicit numbering: none, overriding the numbering set above --
+    // real chapter/section headings resolve it to a real value. Skip
+    // those so a reference list doesn't get its own fractal title page.
+    if numbering == none or it.numbering != none {
+      iteration-page()
+    }
   }
   body // actually show what comes afterwards
 }
