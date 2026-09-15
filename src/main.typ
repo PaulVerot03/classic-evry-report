@@ -322,6 +322,7 @@
       )[#it.body <titlepages-chapter>] // label allows for header/footer to work properly
       v(.75cm)
     })
+    iteration-page()
   }
   // style heading with spacing before and after + spacing between number and name
   show heading.where(level: 2): it => custom-heading(it, 10pt, 5pt)

@@ -127,10 +127,10 @@ In your Typst project (which can be anywhere on your system), import the templat
 
 ## Iteration Motif (`spiral`)
 
-Call `#spiral()` anywhere in your document before your first heading (a
-line right after the imports is simplest) to give every level-1 heading
-(`=`) its own title page, each showing a Heighway dragon-curve motif in
-the report's blues — one more generation, and a bit larger, with every
+Call `#spiral()` in your document, after `outline()`/`note-outline()` but
+before your first real heading, to give every level-1 heading (`=`) below
+it its own title page, each showing a Heighway dragon-curve motif in the
+report's blues — one more generation, and a bit larger, with every
 chapter. Layout borrowed from the
 [hei-synd-report](https://typst.app/universe/package/hei-synd-report)
 cover; an homage to the growing fractal illustrations opening each
@@ -139,8 +139,15 @@ cover; an homage to the growing fractal illustrations opening each
 
 ```typ
 #import "classic-evry-report/lib.typ": spiral
+
+#outline(depth: 2)
 #spiral()
 ```
+
+`outline()`'s own title ("Contents") is itself a level-1 heading, so
+calling `spiral()` *before* it would give the table of contents a motif
+and title page too — call `spiral()` after any `outline()`/
+`note-outline()` call and before your first real section.
 
 Call `#spiral(false)` to turn it back off without deleting the line.
 
