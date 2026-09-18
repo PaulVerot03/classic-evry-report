@@ -155,10 +155,11 @@
 
 // Call from inside a level-1 heading show rule to append the growing
 // motif and break to a fresh page, turning the heading into a title page.
+// The motif is placed out-of-flow so it centers on the page itself,
+// independent of where the title text sits.
 #let iteration-page() = context {
   if show-iterations.get() {
-    align(center, iteration-motif(iteration-number(here())))
-    v(1cm)
+    place(center + horizon, iteration-motif(iteration-number(here())))
     pagebreak(weak: true)
   }
 }
