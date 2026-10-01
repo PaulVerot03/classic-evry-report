@@ -8,6 +8,9 @@
     email: (),
     field-of-study: none,
     project-type: "Semester Project",
+    note: none,
+    uni: none,
+    repository: none,
   ),
   en: (
     title: "Untitled",
@@ -15,7 +18,7 @@
     abstract: none,
     department: "Department of Computer Science",
     department-url: "univ-evry.fr",
-    personal-url:"paulverot.fr",
+    personal-url:"",
   ),
   fr: (
     title: "Sans titre",
@@ -112,7 +115,7 @@
       columns: (1fr, 1fr),
       rows: (3fr, 7fr, 30pt),
       column-gutter: 10pt,
-      image("/classic-evry-report/graphics/Logo_bleu_centré.svg", width: 90%),
+      image("/classic-evry-report/graphics/Logo_noir_centré.svg", width: 90%),
       align(right + horizon)[
         #strong(en.department)\
         Université Évry Paris-Saclay\
@@ -155,16 +158,29 @@
     ] else [
       *Superviseur:*\ #meta.supervisors
     ],
+    [*Dépôt:*\ #meta.repository],
     //[*Copies:* 1],
     [*Nombre de pages:* \ #context counter(page).final().first()],
     [*Dernier changement:*\ #datetime.today().display("[day]-[month]-[year]")],
+    if type(meta.note) == str [
+      *Note*: \ #meta.note
+    ] else [
+      //nothing
+    ],
+    
   )
   page(
     grid(
       columns: (1fr, 1fr),
       rows: (3fr, 7fr, 30pt),
       column-gutter: 10pt,
-      image("/classic-evry-report/graphics/Logo_noir_centré.svg", width: 90%),
+      if meta.uni == "evry" {
+        image("/classic-evry-report/graphics/Logo_noir_centré.svg", width: 90%)
+      } else if meta.uni == "saclay" {
+        image("/classic-evry-report/graphics/Logotype UPSaclay_NOIR.jpg", width: 90%)
+      } else {
+        []
+      },
       align(right + horizon)[
         #strong(fr.department)\
         //Université Évry Paris-Saclay\
@@ -194,7 +210,13 @@
 #let frontmatter(meta, primary-lang, en, en-is-set, fr, fr-is-set, clear-double-page, lang, body) = {
   // Front/cover page.
   page(
-    background: image("/classic-evry-report/graphics/evry-waves.svg", width: 100%, height: 100%),
+    background: if meta.uni == "evry" {
+      image("/classic-evry-report/graphics/evry-waves.svg", width: 100%, height: 100%)
+    } else if meta.uni == "saclay" {
+      image("/classic-evry-report/graphics/saclay-waves.svg", width: 100%, height: 100%)
+    } else {
+      none
+    },
     margin: auto,
     numbering: "1.1",
     grid(
@@ -228,7 +250,11 @@
         },
       )),
       none,
-      align(center, image("/classic-evry-report/graphics/Logo_bleu_centré.svg", width: 25%))
+      align(center, if meta.uni == "saclay" {
+        image("/classic-evry-report/graphics/Logotype UPSaclay_RVB.png", width: 40%)
+      } else {
+        image("/classic-evry-report/graphics/Logo_bleu_centré.svg", width: 25%)
+      })
     ),
   )
 
