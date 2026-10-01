@@ -226,28 +226,30 @@
         } else {
           none
         },
-        inset: 18pt,
-        radius: 1pt,
+        inset: (x: 32pt, y: 26pt),
+        radius: 6pt,
+        width: 68%,
         clip: false,
         {
           set text(fill: white, 12pt)
+          set par(justify: false)
           align(center)[
-            #text(2em, weight: 700, primary-lang.title)\
-            #v(5pt)
+            #text(2em, weight: 600, primary-lang.title)
             #if primary-lang.theme != none [
-              #primary-lang.theme\
-              #v(10pt)
+              #v(6pt)
+              #text(1.05em, style: "italic", fill: white.transparentize(15%), primary-lang.theme)
             ]
-            #meta.participants.join(", ", last: " & ")\
-            #text(10pt)[
-              #if meta.field-of-study != none [
-                #meta.field-of-study,
-              ]
-              #meta.project-group,
-              #datetime.today().year()
+            #v(14pt)
+            #line(length: 32%, stroke: 0.6pt + white.transparentize(55%))
+            #v(14pt)
+            #text(11pt, meta.participants.join(", ", last: " & "))
+            #v(4pt)
+            #text(8.5pt, tracking: 0.6pt, fill: white.transparentize(25%))[
+              #upper(if meta.field-of-study != none [#meta.field-of-study -- ] else [])
+              #upper(meta.project-group) -- #datetime.today().year()
             ]
-            #v(10pt)
-            #meta.project-type
+            #v(12pt)
+            #text(9pt, tracking: 1.2pt, weight: 500)[#upper(meta.project-type)]
           ]
         },
       )),
