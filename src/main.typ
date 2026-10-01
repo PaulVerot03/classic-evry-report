@@ -167,7 +167,7 @@
     ] else [
       //nothing
     ],
-    
+
   )
   page(
     grid(
@@ -182,10 +182,6 @@
         []
       },
       align(right + horizon)[
-        #strong(fr.department)\
-        //Université Évry Paris-Saclay\
-        #link("www." + fr.department-url)[#fr.department-url]\
-        #link("https://" + fr.personal-url)[#fr.personal-url]
       ],
 
       grid(
@@ -223,7 +219,13 @@
       columns: 100%,
       rows: (50%, 20%, 30%),
       align(center + bottom, box(
-        fill: theme-blue,
+        fill: if meta.uni == "evry" {
+          theme-blue
+        } else if meta.uni == "saclay" {
+          theme-purple
+        } else {
+          none
+        },
         inset: 18pt,
         radius: 1pt,
         clip: false,
@@ -239,7 +241,7 @@
             #meta.participants.join(", ", last: " & ")\
             #text(10pt)[
               #if meta.field-of-study != none [
-                #meta.field-of-study, 
+                #meta.field-of-study,
               ]
               #meta.project-group,
               #datetime.today().year()
@@ -306,6 +308,8 @@
 
   // Store the language in state for use by mainmatter
   project-lang.update(lang)
+  // Store the university in state so the spiral() motif can match its colors
+  project-uni.update(meta.uni)
 
   // Set the document's basic properties.
   set document(author: meta.participants, title: primary-lang.title)
@@ -377,4 +381,3 @@
 
   body
 }
-

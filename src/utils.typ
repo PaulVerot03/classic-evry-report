@@ -1,6 +1,7 @@
 #import "@preview/hydra:0.6.2": hydra
 
 #let theme-blue = rgb("#003b69")
+#let theme-purple = rgb("#63003C")
 
 #let blue(body) = text(fill: rgb("#003b69"), body)
 
@@ -58,14 +59,18 @@
 // `#spiral(false)` to turn it back off). Each level-1 heading then gets
 // its own title page with a Heighway dragon-curve motif -- built up one
 // more generation (and slightly larger) with every chapter -- rendered
-// with a radial gradient in the report's own blues (layout borrowed from
-// the hei-synd-report cover, recolored to match theme-blue). Also an
-// homage to the growing fractal illustrations opening each "Iteration" in
-// Jurassic Park (2nd edition).
+// with a radial gradient matching meta.uni's colors (blue for "evry",
+// purple for "saclay"), in the layout of the hei-synd-report cover. Also
+// an homage to the growing fractal illustrations opening each "Iteration"
+// in Jurassic Park (2nd edition).
 
 #let show-iterations = state("show-iterations", false)
 
 #let spiral(value: true) = show-iterations.update(value)
+
+// Set from project(meta: (uni: ...)) so the motif's colors can follow
+// the same university switch as the cover background/logo.
+#let project-uni = state("project-uni", none)
 
 // Turn sequence for an order-`depth` dragon curve, built by the standard
 // doubling construction: seq(n) = seq(n-1) + "L" + flip(reverse(seq(n-1)))
@@ -103,7 +108,16 @@
   points
 }
 
-#let iteration-motif(n) = {
+// Radial palette matching meta.uni: blue for "evry" (the default, also
+// used when uni is unset), purple for "saclay" -- same brand colors as
+// the cover/logo switch in main.typ.
+#let iteration-palette(uni) = if uni == "saclay" {
+  (rgb("#1a0612"), theme-purple, rgb("#a61e4d"), rgb("#f06595"), rgb("#ffdeeb"))
+} else {
+  (rgb("#061320"), theme-blue, rgb("#1971c2"), rgb("#4dabf7"), rgb("#d0ebff"))
+}
+
+#let iteration-motif(n, uni) = {
   // depth is capped so later chapters stay legible instead of turning
   // into an unreadable smudge; the canvas keeps growing a bit past that
   let depth = calc.clamp(n + 2, 3, 12)
@@ -122,11 +136,7 @@
   ))
 
   let grad = gradient.radial(
-    rgb("#061320"),
-    theme-blue,
-    rgb("#1971c2"),
-    rgb("#4dabf7"),
-    rgb("#d0ebff"),
+    ..iteration-palette(uni),
     center: (50%, 50%),
     radius: 75%,
     relative: "self",
@@ -159,7 +169,7 @@
 // independent of where the title text sits.
 #let iteration-page() = context {
   if show-iterations.get() {
-    place(center + horizon, iteration-motif(iteration-number(here())))
+    place(center + horizon, iteration-motif(iteration-number(here()), project-uni.get()))
     pagebreak(weak: true)
   }
 }
