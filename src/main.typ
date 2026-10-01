@@ -177,7 +177,7 @@
       if meta.uni == "evry" {
         image("/classic-evry-report/graphics/Logo_noir_centré.svg", width: 90%)
       } else if meta.uni == "saclay" {
-        image("/classic-evry-report/graphics/Logotype UPSaclay_NOIR.jpg", width: 90%)
+        image("/classic-evry-report/graphics/Logotype UPSaclay_NOIR.svg", width: 90%)
       } else {
         []
       },
@@ -228,7 +228,8 @@
         },
         inset: (x: 32pt, y: 26pt),
         radius: 6pt,
-        width: 68%,
+        width: 100%,
+        height: 60%,
         clip: false,
         {
           set text(fill: white, 12pt)
@@ -237,14 +238,14 @@
             #text(2em, weight: 600, primary-lang.title)
             #if primary-lang.theme != none [
               #v(6pt)
-              #text(1.05em, style: "italic", fill: white.transparentize(15%), primary-lang.theme)
+              #text(2em, style: "italic", fill: white.transparentize(15%), primary-lang.theme)
             ]
             #v(14pt)
             #line(length: 32%, stroke: 0.6pt + white.transparentize(55%))
             #v(14pt)
-            #text(11pt, meta.participants.join(", ", last: " & "))
+            #text(16pt, meta.participants.join(", ", last: " & "))
             #v(4pt)
-            #text(8.5pt, tracking: 0.6pt, fill: white.transparentize(25%))[
+            #text(14pt, tracking: 0.6pt, fill: white.transparentize(25%))[
               #upper(if meta.field-of-study != none [#meta.field-of-study -- ] else [])
               #upper(meta.project-group) -- #datetime.today().year()
             ]
@@ -255,7 +256,7 @@
       )),
       none,
       align(center, if meta.uni == "saclay" {
-        image("/classic-evry-report/graphics/Logotype UPSaclay_RVB.png", width: 40%)
+        image("/classic-evry-report/graphics/Logotype UPSaclay_MAROON.svg", width: 32%)
       } else {
         image("/classic-evry-report/graphics/Logo_bleu_centré.svg", width: 25%)
       })
