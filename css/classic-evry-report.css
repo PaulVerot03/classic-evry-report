@@ -1,0 +1,271 @@
+/*
+ * classic-evry-report.css — companion stylesheet for Markdown → PDF exports.
+ *
+ * Distills the visual identity of the classic-evry-report Typst template
+ * (Université Évry Paris-Saclay) for simple, single-file documents: the
+ * same serif body copy, the navy title-banner from the cover page, plain
+ * black section headings with a thin rule (no colour bleed, matching the
+ * template's restrained use of blue), underlined links, a boxed "abstract"
+ * treatment for asides, and booktabs-style tables.
+ *
+ * Usage: point your MD -> PDF tool at this file (pandoc --css, the VS Code
+ * "Markdown PDF" extension, a browser print, WeasyPrint, Prince...).
+ * If this repo is symlinked into your project the way you already do for
+ * Typst (`ln -s ~/Documents/classic-evry-report classic-evry-report`), the
+ * @font-face block below picks up the bundled Palatino faces automatically;
+ * otherwise it falls back to system serif fonts.
+ */
+
+@font-face {
+  font-family: "Classic Evry Serif";
+  src: url("../fonts/pala.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Classic Evry Serif";
+  src: url("../fonts/palab.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Classic Evry Serif";
+  src: url("../fonts/palai.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Classic Evry Serif";
+  src: url("../fonts/palabi.ttf") format("truetype");
+  font-weight: 700;
+  font-style: italic;
+}
+
+:root {
+  --evry-blue: #003b69;
+  --evry-blue-pale: #eaf1f8;
+  --rule: #c7ccd4;
+  --text: #1a1a1a;
+  --text-muted: #55606e;
+  --font-serif: "Classic Evry Serif", "Palatino Linotype", "Palatino",
+    "Libertinus Serif", "Book Antiqua", Georgia, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", "Fira Code", Consolas, "Liberation Mono",
+    monospace;
+}
+
+@page {
+  size: A4;
+  /* Flattened from the template's asymmetric binding margins
+     (inside: 2.8cm, outside: 4.1cm) into a single-sided average. */
+  /*margin: 2.8cm 3.2cm;*/
+  margin: 0.5cm 1cm;
+  /* Honoured by WeasyPrint / Prince / Paged.js; silently ignored by
+     Chromium-based exporters, which supply their own header/footer option. */
+  @bottom-center {
+    content: counter(page) " / " counter(pages);
+    font-family: var(--font-serif);
+    font-size: 9pt;
+    color: var(--text-muted);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color: var(--text);
+}
+
+body {
+  font-family: var(--font-serif);
+  font-size: 11.5pt;
+  line-height: 1.55;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+
+p {
+  margin: 0 0 0.65em;
+  text-indent: 0;
+}
+
+/* ---- Title (H1): the cover-banner treatment ---- */
+h1 {
+  background: var(--evry-blue);
+  color: #fff;
+  font-weight: 700;
+  font-size: 2em;
+  text-align: center;
+  margin: 0 0 1.5em;
+  padding: 0.9em 1.2em;
+  border-radius: 1px;
+  page-break-after: avoid;
+  page-break-inside: avoid;
+}
+h1 a {
+  color: #fff;
+}
+
+/* ---- Section headings: plain, restrained, thin navy rule ---- */
+h2 {
+  color: var(--evry-blue);
+  font-size: 1.35em;
+  font-weight: 700;
+  margin: 1.8em 0 0.6em;
+  padding-bottom: 0.25em;
+  border-bottom: 1px solid var(--evry-blue);
+  page-break-after: avoid;
+}
+
+h3 {
+  color: var(--evry-blue);
+  font-size: 1.1em;
+  font-weight: 700;
+  margin: 1.4em 0 0.4em;
+  page-break-after: avoid;
+}
+
+h4,
+h5,
+h6 {
+  color: var(--text);
+  font-size: 1em;
+  font-weight: 700;
+  font-style: italic;
+  margin: 1.2em 0 0.3em;
+  page-break-after: avoid;
+}
+
+/* ---- Links: underlined, no colour shift (matches `show link: underline`) ---- */
+a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 0.5px;
+  text-underline-offset: 2px;
+}
+
+/* ---- Lists ---- */
+ul,
+ol {
+  margin: 0.5em 0 0.65em;
+  padding-left: 1.4em;
+  display: block;
+  /* A <li> that lands as the first line on a new page can lose its
+     marker/box in some paginated renderers, which reads as the list
+     "collapsing" into a run of inline text. Keep short lists whole, and
+     let long ones only break between items, never inside one. */
+  break-inside: avoid-page;
+  page-break-inside: avoid;
+}
+li {
+  display: list-item;
+  margin-bottom: 0.3em;
+  break-inside: avoid-page;
+  page-break-inside: avoid;
+}
+li > ul,
+li > ol {
+  margin-top: 0.3em;
+}
+
+/* ---- Blockquote / callouts: the template's boxed "abstract" treatment ---- */
+blockquote {
+  margin: 1em 0;
+  padding: 0.6em 1em;
+  border: 0.5px solid var(--text);
+  background: var(--evry-blue-pale);
+  text-align: left;
+}
+blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+/* ---- Tables: booktabs-style, no vertical rules ---- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0 1.4em;
+  font-size: 0.95em;
+  text-align: left;
+}
+thead tr {
+  border-top: 1px solid var(--text);
+  border-bottom: 1px solid var(--text);
+}
+th {
+  font-weight: 700;
+  padding: 0.4em 0.6em;
+}
+td {
+  padding: 0.4em 0.6em;
+  vertical-align: top;
+}
+tbody tr:last-child td {
+  border-bottom: 1px solid var(--text);
+}
+
+/* ---- Figures / images: bold caption, matches template's figure.caption rule ---- */
+figure {
+  margin: 1.2em auto;
+  padding: 0.35em 0 0.7em;
+  text-align: center;
+  page-break-inside: avoid;
+}
+img {
+  max-width: 100%;
+}
+figcaption {
+  font-size: 0.9em;
+  font-weight: 700;
+  margin-top: 0.5em;
+  text-align: center;
+}
+
+/* ---- Code ---- */
+code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: #f2f3f5;
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+}
+pre {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: #f2f3f5;
+  border: 0.5px solid var(--rule);
+  border-radius: 4px;
+  padding: 0.8em 1em;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  margin: 1em 0 1.4em;
+  page-break-inside: avoid;
+}
+pre code {
+  background: none;
+  padding: 0;
+}
+
+/* ---- Rules & misc ---- */
+hr {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 2em 0;
+}
+strong {
+  font-weight: 700;
+}
+em {
+  font-style: italic;
+}
+
+@media screen {
+  ::selection {
+    background: var(--evry-blue-pale);
+  }
+}
